@@ -58,7 +58,6 @@ void BunnySay::writeBunnySay(std::wstring input) {
     lastloc = splitloc;
   }
   std::wcout << bunny2 << std::endl;
-
 }
 
 } /* namespace bunnysay */
@@ -68,8 +67,9 @@ int main(int argc, char** argv) {
 
   std::wstring inputstring = L"";
   std::wstring temp = L"";
-  while(!std::wcin.eof()) {
+  while(true) {
     std::wcin >> temp;
+    if (std::wcin.eof()) break;
     inputstring += L" " + temp;
   }
   bunnysay::BunnySay::writeBunnySay(inputstring);
