@@ -52,9 +52,9 @@ void BunnySay::writeBunnySay(std::wstring input) {
     curstring = L"|" + curstring + L"|\n";
     std::wcout << curstring;
     // Break if we are out of charactors
-    if (splitloc == input.size()) break;
+    if (splitloc == input.size() - 1) break;
     // Split the string to what we have left
-    input = input.substr(splitloc + 1);
+    input = input.substr(splitloc);
     lastloc = splitloc;
   }
   std::wcout << bunny2 << std::endl;
