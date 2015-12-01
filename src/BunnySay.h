@@ -23,9 +23,9 @@
 #ifndef BUNNYSAY_H_
 #define BUNNYSAY_H_
 
-#include <string>
-#include <locale>
-#include <iostream>
+#include <string> // wstring
+#include <locale> // locale for wstring
+#include <iostream> // io
 #include <algorithm> // min
 
 namespace bunnysay {

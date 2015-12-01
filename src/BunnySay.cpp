@@ -36,20 +36,24 @@ void BunnySay::writeBunnySay(std::wstring input) {
   int lastloc = 0;
   std::wstring curstring;
   while (input.size() > 0) {
+    // Find a spot to split the string on
     int subsubstringindex = std::min(15, (int) input.size());
     int splitloc = input.substr(subsubstringindex).find(' ') + subsubstringindex;
-
+    // If the string is small enough or we cannot find a space just use
+    // the whole string
     if (splitloc == std::string::npos || input.size() < 15)
       curstring = input;
     else
       curstring = input.substr(0, splitloc);
-
+    // Pad left and right with spaces
     while (curstring.size() < 19)
       curstring = L" " + curstring + L" ";
-
+    // Add the pipes
     curstring = L"|" + curstring + L"|\n";
     std::wcout << curstring;
+    // Break if we are out of charactors
     if (splitloc == input.size()) break;
+    // Split the string to what we have left
     input = input.substr(splitloc + 1);
     lastloc = splitloc;
   }
@@ -60,7 +64,8 @@ void BunnySay::writeBunnySay(std::wstring input) {
 } /* namespace bunnysay */
 
 int main(int argc, char** argv) {
-  std::locale::global(std::locale(""));
+  std::locale::global(std::locale("")); // System locale
+
   std::wstring inputstring = L"";
   std::wstring temp = L"";
   while(!std::wcin.eof()) {
