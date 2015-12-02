@@ -24,9 +24,9 @@
 namespace bunnysay {
 
 const std::wstring BunnySay::bunny =
-L"|\uffe3\uffe3\uffe3\uffe3\uffe3\uffe3|\n";
+L"|\uffe3\uffe3\uffe3\uffe3\uffe3\uffe3\uffe3|\n";
 const std::wstring BunnySay::bunny2 =
-L"|\uff3f\uff3f\uff3f\uff3f\uff3f__|\n"
+L"|\uff3f\uff3f\uff3f\uff3f\uff3f\uff3f__|\n"
 L"(\\__/) ||\n"
 L"(•\u3145•) ||\n"
 L"/ \u3000 \u3065"; // Spaces = 19
@@ -37,19 +37,19 @@ void BunnySay::writeBunnySay(std::wstring input) {
   while (input.size() != 0) {
     // If the string is small enough or we cannot find a space just use
     // the whole string
-    if (input.size() < 18)
+    if (input.size() < 14)
       curstring = input;
     else {
-      std::size_t pos = input.rfind(' ', 18);
-      if (pos == std::string::npos) pos = 18;
+      std::size_t pos = input.rfind(' ', 14);
+      if (pos == std::string::npos) pos = 14;
       curstring = input.substr(0, pos);
     }
     input = input.substr(curstring.size());
 
     // Pad left and right with spaces
-    while (curstring.size() < 19)
+    while (curstring.size() < 14)
       curstring = L" " + curstring + L" ";
-      
+
     // Add the pipes
     curstring = L"|" + curstring + L"|\n";
     std::wcout << curstring;
