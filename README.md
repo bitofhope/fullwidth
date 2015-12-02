@@ -1,6 +1,15 @@
 # bunnysay
 Bunny Sign for terminals with wchar support
 
+
+    |￣￣￣￣￣￣￣|
+    |  bunnysay   |
+    |＿＿＿＿＿＿__|
+    (\__/) ||
+    (•ㅅ•) ||
+    / 　 づ
+
+
 ## Summary
 
 Takes input from standard input, you can use 
