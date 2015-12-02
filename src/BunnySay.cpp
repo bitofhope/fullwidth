@@ -33,29 +33,26 @@ L"/ \u3000 \u3065"; // Spaces = 19
 
 void BunnySay::writeBunnySay(std::wstring input) {
   std::wcout << bunny;
-  int lastloc = 0;
   std::wstring curstring;
-  while (input.size() > 0) {
-    // Find a spot to split the string on
-    int subsubstringindex = std::min(15, (int) input.size());
-    int splitloc = input.substr(subsubstringindex).find(' ') + subsubstringindex;
+  while (input.size() != 0) {
     // If the string is small enough or we cannot find a space just use
     // the whole string
-    if (splitloc == std::string::npos || input.size() < 15)
+    if (input.size() < 18)
       curstring = input;
-    else
-      curstring = input.substr(0, splitloc);
+    else {
+      std::size_t pos = input.rfind(' ', 18);
+      if (pos == std::string::npos) pos = 18;
+      curstring = input.substr(0, pos);
+    }
+    input = input.substr(curstring.size());
+
     // Pad left and right with spaces
     while (curstring.size() < 19)
       curstring = L" " + curstring + L" ";
+      
     // Add the pipes
     curstring = L"|" + curstring + L"|\n";
     std::wcout << curstring;
-    // Break if we are out of charactors
-    if (splitloc == input.size() - 1) break;
-    // Split the string to what we have left
-    input = input.substr(splitloc);
-    lastloc = splitloc;
   }
   std::wcout << bunny2 << std::endl;
 }
@@ -67,6 +64,7 @@ int main(int argc, char** argv) {
 
   std::wstring inputstring = L"";
   std::wstring temp = L"";
+  std::wcin >> inputstring;
   while(true) {
     std::wcin >> temp;
     if (std::wcin.eof()) break;
