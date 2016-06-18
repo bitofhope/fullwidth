@@ -23,38 +23,74 @@
 
 namespace bunnysay {
 
+const int width = 10;
 const std::wstring BunnySay::bunny =
-L"|\uffe3\uffe3\uffe3\uffe3\uffe3\uffe3\uffe3|\n";
+L"｜￣￣￣￣￣￣￣￣￣￣｜\n";
 const std::wstring BunnySay::bunny2 =
-L"|\uff3f\uff3f\uff3f\uff3f\uff3f\uff3f__|\n"
+L"｜＿＿＿＿＿＿＿＿＿＿｜\n"
 L"(\\__/) ||\n"
-L"(•\u3145•) ||\n"
-L"/ \u3000 \u3065"; // Spaces = 19
+L"(•ㅅ•) ||\n"
+L"/ 　 づ";
 
 void BunnySay::writeBunnySay(std::wstring input) {
+  input = replaceString(input);
   std::wcout << bunny;
   std::wstring curstring;
   while (input.size() != 0) {
     // If the string is small enough or we cannot find a space just use
     // the whole string
-    if (input.size() < 14)
+    if (input.size() < width) {
       curstring = input;
-    else {
-      std::size_t pos = input.rfind(' ', 14);
-      if (pos == std::string::npos) pos = 14;
+    } else {
+      std::size_t pos = input.rfind(L'　', width);
+      if (pos == std::string::npos) {
+        pos = width;
+      }
       curstring = input.substr(0, pos);
     }
     input = input.substr(curstring.size());
 
     // Pad left and right with spaces
-    while (curstring.size() < 14)
-      curstring = L" " + curstring + L" ";
+    bool left = true;
+    while (curstring.size() < width) {
+      if (left) {
+        curstring = L"　" + curstring;
+      } else {
+        curstring = curstring + L"　";
+      }
+      left = !left;
+    }
 
     // Add the pipes
-    curstring = L"|" + curstring + L"|\n";
+    curstring = L"｜" + curstring + L"｜\n";
     std::wcout << curstring;
   }
   std::wcout << bunny2 << std::endl;
+}
+
+std::wstring BunnySay::replaceString(std::wstring input) {
+  wchar_t zerow = L'０';
+  std::stack<size_t> cstack;
+
+  for(size_t i = 0; i < input.size(); ++i) {
+    if(input[i] >= L'!' && input[i] <= L'z') {
+      cstack.push(i);
+    }
+  }
+
+  while(!cstack.empty()) {
+    size_t pos = cstack.top();
+    cstack.pop();
+    //std::cout << pos << std::endl;
+
+    wchar_t charmod = wchar_t(zerow + (input[pos] - '0'));// - 'a';
+    if (input[pos] == ' ')
+      charmod = 0x3000;
+    input.erase(pos, 1);
+    input.insert(pos, std::wstring(1, charmod));
+  }
+
+  return input;
 }
 
 } /* namespace bunnysay */
@@ -68,7 +104,7 @@ int main(int argc, char** argv) {
   while(true) {
     std::wcin >> temp;
     if (std::wcin.eof()) break;
-    inputstring += L" " + temp;
+    inputstring += L"　" + temp;
   }
   bunnysay::BunnySay::writeBunnySay(inputstring);
   return 0;

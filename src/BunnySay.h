@@ -27,6 +27,7 @@
 #include <locale> // locale for wstring
 #include <iostream> // io
 #include <algorithm> // min
+#include <stack>
 
 namespace bunnysay {
 
@@ -35,6 +36,7 @@ private:
   static const std::wstring bunny;
   static const std::wstring bunny2;
 public:
+  static std::wstring replaceString(std::wstring input);
   static void writeBunnySay(std::wstring input);
 
 };
