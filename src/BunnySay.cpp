@@ -31,12 +31,14 @@ L"｜＿＿＿＿＿＿＿＿＿＿｜\n"
 L"(\\__/) ||\n"
 L"(•ㅅ•) ||\n"
 L"/ 　 づ";
+// Writes wstring input to the stdout after chunking it and converting
+// all characters to their wide counterparts in unicode
 void BunnySay::writeBunnySay(std::wstring input) {
   input = replaceString(input);
   std::wcout << bunny;
   bool left = true;
   std::vector<std::wstring> vs;
-  vs = BunnySay::splitAtWidth(input + L"　", width);
+  vs = splitAtWidth(input + L"　", width);
   for (auto i = vs.begin(); i != vs.end(); ++i) {
     std::wstring curstring = (*i);
     // Pad left and right with spaces
@@ -55,6 +57,8 @@ void BunnySay::writeBunnySay(std::wstring input) {
    } 
     std::wcout << bunny2 << std::endl;
 }
+// Helper function to split a sentance delimited with fixed-width spaces
+// into strings 10 chars or less
 std::vector<std::wstring> BunnySay::splitAtWidth(std::wstring wstring, int width) {
   std::vector<std::wstring> vwstrings;
   std::wstringstream ws(wstring);
@@ -90,9 +94,8 @@ std::vector<std::wstring> BunnySay::splitAtWidth(std::wstring wstring, int width
   return vwstrings; 
 }
     
-
-
-
+// Helper function that returns a copy of input with all letters
+// Converted to their fixed-width counter part if they exist
 std::wstring BunnySay::replaceString(std::wstring input) {
   wchar_t zerow = L'０';
   std::stack<size_t> cstack;
