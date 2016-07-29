@@ -28,7 +28,8 @@
 #include <iostream> // io
 #include <algorithm> // min
 #include <stack>
-
+#include <vector>
+#include <sstream>
 namespace bunnysay {
 
 class BunnySay {
@@ -38,7 +39,7 @@ private:
 public:
   static std::wstring replaceString(std::wstring input);
   static void writeBunnySay(std::wstring input);
-
+  static std::vector<std::wstring> splitAtWidth(std::wstring wstring, int width);
 };
 
 } /* namespace bunnysay */

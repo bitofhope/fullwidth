@@ -31,27 +31,15 @@ L"｜＿＿＿＿＿＿＿＿＿＿｜\n"
 L"(\\__/) ||\n"
 L"(•ㅅ•) ||\n"
 L"/ 　 づ";
-
 void BunnySay::writeBunnySay(std::wstring input) {
   input = replaceString(input);
   std::wcout << bunny;
-  std::wstring curstring;
-  while (input.size() != 0) {
-    // If the string is small enough or we cannot find a space just use
-    // the whole string
-    if (input.size() < width) {
-      curstring = input;
-    } else {
-      std::size_t pos = input.rfind(L'　', width);
-      if (pos == std::string::npos) {
-        pos = width;
-      }
-      curstring = input.substr(0, pos);
-    }
-    input = input.substr(curstring.size());
-
+  bool left = true;
+  std::vector<std::wstring> vs;
+  vs = BunnySay::splitAtWidth(input + L"　", width);
+  for (auto i = vs.begin(); i != vs.end(); ++i) {
+    std::wstring curstring = (*i);
     // Pad left and right with spaces
-    bool left = true;
     while (curstring.size() < width) {
       if (left) {
         curstring = L"　" + curstring;
@@ -64,9 +52,46 @@ void BunnySay::writeBunnySay(std::wstring input) {
     // Add the pipes
     curstring = L"｜" + curstring + L"｜\n";
     std::wcout << curstring;
-  }
-  std::wcout << bunny2 << std::endl;
+   } 
+    std::wcout << bunny2 << std::endl;
 }
+std::vector<std::wstring> BunnySay::splitAtWidth(std::wstring wstring, int width) {
+  std::vector<std::wstring> vwstrings;
+  std::wstringstream ws(wstring);
+  std::wstring bufferstr;
+  std::wstring workstring; 
+  bool toolongcarry = false;
+  while(true) {
+    while(true) {
+      if (!toolongcarry) {
+	std::getline(ws, bufferstr, L'　');
+
+      }
+      toolongcarry = false;
+      
+      if (!ws.good()) { break; }
+      if (bufferstr.size() + workstring.size() + 1 > width) {
+	if (workstring.size() == 0) {
+	  // Add as much as we can
+	  workstring = bufferstr.substr(0, width);
+	  bufferstr = bufferstr.substr(width);
+	}
+	toolongcarry = true;
+	break;
+      }
+      // CHANGE TO WIDE SPACE
+      if (workstring.size() != 0) workstring += L'　';
+      workstring += bufferstr; 
+    }
+    vwstrings.push_back(workstring);
+    workstring = L"";
+    if (!ws.good()) break; 
+  }
+  return vwstrings; 
+}
+    
+
+
 
 std::wstring BunnySay::replaceString(std::wstring input) {
   wchar_t zerow = L'０';
@@ -109,3 +134,4 @@ int main(int argc, char** argv) {
   bunnysay::BunnySay::writeBunnySay(inputstring);
   return 0;
 }
+
