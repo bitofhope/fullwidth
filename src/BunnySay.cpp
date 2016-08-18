@@ -20,6 +20,7 @@
 */
 
 #include "BunnySay.h"
+#include <cstdio>
 
 namespace bunnysay {
 
@@ -41,6 +42,7 @@ void BunnySay::writeBunnySay(std::wstring input) {
   vs = splitAtWidth(input + L"　", width);
   for (auto i = vs.begin(); i != vs.end(); ++i) {
     std::wstring curstring = (*i);
+    if (curstring.compare(L"") == 0) continue;
     // Pad left and right with spaces
     while (curstring.size() < width) {
       if (left) {
@@ -83,7 +85,6 @@ std::vector<std::wstring> BunnySay::splitAtWidth(std::wstring wstring, int width
 	toolongcarry = true;
 	break;
       }
-      // CHANGE TO WIDE SPACE
       if (workstring.size() != 0) workstring += L'　';
       workstring += bufferstr; 
     }
