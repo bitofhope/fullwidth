@@ -20,7 +20,6 @@
 */
 
 #include "BunnySay.h"
-#include <cstdio>
 
 namespace bunnysay {
 
