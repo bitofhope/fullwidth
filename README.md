@@ -24,7 +24,7 @@ if you wish to use from terminal.
 
 ## Build
 ### Arch Linux
-This on the AUR as [bunnysay-git](https://aur.archlinux.org/packages/bunnysay-git)
+Available on the AUR as [bunnysay-git](https://aur.archlinux.org/packages/bunnysay-git)
 ### Other
 
 Requires cmake 3.1.0 for no particular reason, if you don't like it compile it yourself
