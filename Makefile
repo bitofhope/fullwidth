@@ -1,5 +1,5 @@
 
-OBJ  = src/Bunnysay.cpp
+OBJ  = src/bunnysay.cc
 CXXFLAGS = -Wall -std=c++11
 DEBUG = -g
 bunnysay : $(OBJ)

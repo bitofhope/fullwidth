@@ -30,6 +30,7 @@
 #include <stack>
 #include <vector>
 #include <sstream>
+#include <codecvt>
 namespace bunnysay {
 
 class BunnySay {
@@ -37,6 +38,7 @@ private:
   static const std::wstring bunny;
   static const std::wstring bunny2;
 public:
+  static std::string ws2s(const std::wstring& wstr);
   static std::wstring replaceString(std::wstring input);
   static void writeBunnySay(std::wstring input);
   static std::vector<std::wstring> splitAtWidth(std::wstring wstring, int width);

@@ -19,7 +19,7 @@
 *
 */
 
-#include "BunnySay.h"
+#include "bunnysay.h"
 
 namespace bunnysay {
 
@@ -31,11 +31,17 @@ L"｜＿＿＿＿＿＿＿＿＿＿｜\n"
 L"(\\__/) ||\n"
 L"(•ㅅ•) ||\n"
 L"/ 　 づ";
+
+std::string BunnySay::ws2s(const std::wstring& wstr) {
+  std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cov;
+  return cov.to_bytes(wstr);
+}
+
 // Writes wstring input to the stdout after chunking it and converting
 // all characters to their wide counterparts in unicode
 void BunnySay::writeBunnySay(std::wstring input) {
   input = replaceString(input);
-  std::wcout << bunny;
+  std::cout << ws2s(bunny);
   bool left = true;
   std::vector<std::wstring> vs;
   vs = splitAtWidth(input + L"　", width);
@@ -54,9 +60,9 @@ void BunnySay::writeBunnySay(std::wstring input) {
 
     // Add the pipes
     curstring = L"｜" + curstring + L"｜\n";
-    std::wcout << curstring;
+    std::cout << ws2s(curstring);
    } 
-    std::wcout << bunny2 << std::endl;
+    std::cout << ws2s(bunny2) << std::endl;
 }
 // Helper function to split a sentance delimited with fixed-width spaces
 // into strings 10 chars or less
@@ -124,7 +130,7 @@ std::wstring BunnySay::replaceString(std::wstring input) {
 } /* namespace bunnysay */
 
 int main(int argc, char** argv) {
-  std::locale::global(std::locale("")); // System locale
+  //std::locale::global(std::locale("")); // System locale
 
   std::wstring inputstring = L"";
   std::wstring temp = L"";
