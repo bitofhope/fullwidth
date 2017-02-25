@@ -1,5 +1,6 @@
 
-OBJ  = src/bunnysay.cc
+SRC  = src/bunnysay.cc
+TESTSRC = src/rune.cc
 CXXFLAGS = -Wall -Wextra -std=c++11
 DEBUG = -g
 
@@ -7,9 +8,11 @@ ifndef $(prefix)
 	prefix=/usr
 endif
 
-bunnysay : $(OBJ)
-	$(CXX) -O2 $(CXXFLAGS) -o bunnysay $(OBJ)
+bunnysay: $(SRC) src/rune.cc
+	$(CXX) -O2 $(CXXFLAGS) -o bunnysay $(SRC)
 
+tests: $(TESTSRC) src/runetests.cc src/bunnysay.cc
+	$(CXX) $(DEBUG) $(CXXFLAGS) -o tests $(TESTSRC) src/runetests.cc src/bunnysay.cc
 
 .PHONY: install
 install : bunnysay

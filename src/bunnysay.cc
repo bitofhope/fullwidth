@@ -1,146 +1,81 @@
-/*
-* BunnySay.cpp
-*
-*  Created on: 2015-11-30
-*      Author: brad
-*
-*   This program is free software: you can redistribute it and/or modify
-*    it under the terms of the GNU General Public License as published by
-*    the Free Software Foundation, either version 3 of the License, or
-*    (at your option) any later version.
-*
-*    This program is distributed in the hope that it will be useful,
-*    but WITHOUT ANY WARRANTY; without even the implied warranty of
-*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*    GNU General Public License for more details.
-*
-*    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
 
+#include <vector>
+#include "rune.h"
 #include "bunnysay.h"
 
-namespace bunnysay {
 
-const int width = 10;
-const std::wstring BunnySay::bunny =
-L"｜￣￣￣￣￣￣￣￣￣￣｜\n";
-const std::wstring BunnySay::bunny2 =
-L"｜＿＿＿＿＿＿＿＿＿＿｜\n"
-L"(\\__/) ||\n"
-L"(•ㅅ•) ||\n"
-L"/ 　 づ";
-
-std::string BunnySay::ws2s(const std::wstring& wstr) {
-  std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> cov;
-  return cov.to_bytes(wstr);
-}
-
-// Writes wstring input to the stdout after chunking it and converting
-// all characters to their wide counterparts in unicode
-void BunnySay::writeBunnySay(std::wstring input) {
-  input = replaceString(input);
-  std::cout << ws2s(bunny);
-  bool left = true;
-  std::vector<std::wstring> vs;
-  vs = splitAtWidth(input + L"　", width);
-  for (auto i = vs.begin(); i != vs.end(); ++i) {
-    std::wstring curstring = (*i);
-    if (curstring.compare(L"") == 0) continue;
-    // Pad left and right with spaces
-    while (curstring.size() < width) {
-      if (left) {
-        curstring = L"　" + curstring;
-      } else {
-        curstring = curstring + L"　";
+std::vector<std::vector<Rune>> splitLines(const std::vector<Rune> &input,
+    size_t cols) {
+  std::vector<std::vector<Rune>> result;
+  auto words = splitWords(input);
+  std::vector<Rune> curline;
+  for (auto &word: words) {
+    if (word.size() > cols) { // Long words require multiple lines anyway
+      std::vector<Rune> lineleft = word;
+      if (curline.size() != 0) {
+        while (curline.size() < cols) {
+          curline.push_back(lineleft.at(0));
+          lineleft.erase(lineleft.begin());
+        }
+        result.push_back(curline);
+        curline.clear();
       }
-      left = !left;
-    }
-
-    // Add the pipes
-    curstring = L"｜" + curstring + L"｜\n";
-    std::cout << ws2s(curstring);
-   } 
-    std::cout << ws2s(bunny2) << std::endl;
-}
-// Helper function to split a sentance delimited with fixed-width spaces
-// into strings 10 chars or less
-std::vector<std::wstring> BunnySay::splitAtWidth(std::wstring wstring, int width) {
-  std::vector<std::wstring> vwstrings;
-  std::wstringstream ws(wstring);
-  std::wstring bufferstr;
-  std::wstring workstring; 
-  bool toolongcarry = false;
-  while(true) {
-    while(true) {
-      if (!toolongcarry) {
-	std::getline(ws, bufferstr, L'　');
-
+      while(lineleft.size() > cols) {
+        std::vector<Rune> longline;
+        for (size_t i = 0; i < cols; i++) {
+          longline.push_back(lineleft.at(0));
+          lineleft.erase(lineleft.begin());
+        }
+        result.push_back(longline);
       }
-      toolongcarry = false;
-      
-      if (!ws.good()) { break; }
-      if (bufferstr.size() + workstring.size() + 1 > width) {
-	if (workstring.size() == 0) {
-	  // Add as much as we can
-	  workstring = bufferstr.substr(0, width);
-	  bufferstr = bufferstr.substr(width);
-	}
-	toolongcarry = true;
-	break;
+      // Rest of the word
+      for (auto r: lineleft) {
+        curline.push_back(r);
       }
-      if (workstring.size() != 0) workstring += L'　';
-      workstring += bufferstr; 
-    }
-    vwstrings.push_back(workstring);
-    workstring = L"";
-    if (!ws.good()) break; 
-  }
-  return vwstrings; 
-}
-    
-// Helper function that returns a copy of input with all letters
-// Converted to their fixed-width counter part if they exist
-std::wstring BunnySay::replaceString(std::wstring input) {
-  wchar_t zerow = L'０';
-  std::stack<size_t> cstack;
+      if (curline.size() != cols) {
+        curline.push_back(Rune(0x20));
+      }
 
-  for(size_t i = 0; i < input.size(); ++i) {
-    if(input[i] >= L'!' && input[i] <= L'z') {
-      cstack.push(i);
+    } else if (word.size() > cols - curline.size()) { // Make new row
+      result.push_back(curline);
+      curline.clear();
+      for (auto r: word) {
+        curline.push_back(r);
+      }
+      if (curline.size() != cols) {
+        curline.push_back(Rune(0x20));
+      }
+    } else { // Space for word on this line
+      for (auto r: word) {
+        curline.push_back(r);
+      }
+      if (curline.size() != cols) {
+        curline.push_back(Rune(0x20));
+      }
     }
   }
-
-  while(!cstack.empty()) {
-    size_t pos = cstack.top();
-    cstack.pop();
-    //std::cout << pos << std::endl;
-
-    wchar_t charmod = wchar_t(zerow + (input[pos] - '0'));// - 'a';
-    if (input[pos] == ' ')
-      charmod = 0x3000;
-    input.erase(pos, 1);
-    input.insert(pos, std::wstring(1, charmod));
+  if (curline.size() != 0) {
+    result.push_back(curline);
   }
-
-  return input;
+  return result;
 }
 
-} /* namespace bunnysay */
-
-int main(int argc, char** argv) {
-  //std::locale::global(std::locale("")); // System locale
-
-  std::wstring inputstring = L"";
-  std::wstring temp = L"";
-  std::wcin >> inputstring;
-  while(true) {
-    std::wcin >> temp;
-    if (std::wcin.eof()) break;
-    inputstring += L"　" + temp;
-  }
-  bunnysay::BunnySay::writeBunnySay(inputstring);
-  return 0;
+void fullWidth(std::vector<Rune> *input) {
+  // TODO add to the codepoints here
 }
 
+void fullWidth(std::vector<std::vector<Rune>> *input) {
+  for (auto &rv: *input) {
+    fullWidth(&rv);
+  }
+}
+
+std::vector<std::vector<Rune>> applyTrailerHeader(const 
+    std::vector<std::vector<Rune>> &input) {
+
+}
+
+std::string bunnyify(const std::string &text) {
+  // Use 10 as width
+  return "";
+}
