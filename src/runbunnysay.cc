@@ -20,6 +20,7 @@
 */
 #include "bunnysay.h"
 #include <iostream>
+#include <iterator>
 #include <string>
 
 void usage(char *prog) {
@@ -32,7 +33,9 @@ void usage(char *prog) {
 int main(int argc, char **argv) {
   std::string buff;
   if (argc >= 2 && std::string(argv[1]) == "--") {
-    while(std::getline(std::cin, buff, '\n')) {}
+    std::istream_iterator<char> it(std::cin);
+    std::istream_iterator<char> end;
+    buff = std::string(it, end);
   } else if (argc >= 2) {
     for (int i = 1; i < argc; i++) {
       if (i != 1) {
