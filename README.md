@@ -1,5 +1,5 @@
 # bunnysay
-Bunny Sign for terminals with wchar support
+Bunny Sign for terminals with UTF-8 support
 
 ```
 ｜￣￣￣￣￣￣￣￣￣￣｜
@@ -7,7 +7,7 @@ Bunny Sign for terminals with wchar support
 ｜　　ｎｏｗ　ｗｉｔｈ｜
 ｜　　　ｆｉｘｅｄ　　｜
 ｜　　　ｗｉｄｔｈ　　｜
-｜　　ｗｓｔｒｉｎｇ　｜
+｜　　ｓｔｒｉｎｇ　　｜
 ｜＿＿＿＿＿＿＿＿＿＿｜
 (\__/) ||
 (•ㅅ•) ||
@@ -16,9 +16,13 @@ Bunny Sign for terminals with wchar support
 
 ## Summary
 
-Takes input from standard input, you can use
+Takes input from standard input or cmdline args, you can use
 
-`echo '<string>' | bunnysay`
+`echo '<string>' | bunnysay --`
+
+or
+
+`bunnysay <string>`
 
 if you wish to use from terminal.
 
@@ -30,3 +34,6 @@ Available on the AUR as [bunnysay-git](https://aur.archlinux.org/packages/bunnys
 Change directory to the root of the project,
 
 1. `make`
+2. `sudo make prefix=/usr install`
+
+Note: Your system may use prefix of /usr/local use your noggin

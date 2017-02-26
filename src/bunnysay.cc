@@ -61,7 +61,15 @@ std::vector<std::vector<Rune>> splitLines(const std::vector<Rune> &input,
 }
 
 void fullWidth(std::vector<Rune> *input) {
-  // TODO add to the codepoints here
+  uint32_t ch;
+  for (size_t i = 0; i < input->size(); ++i) {
+    ch = input->at(i).getCodepoint();
+    if (ch == ' ') {
+      (*input)[i] = Rune(0x3000);
+    } else if (ch >= '!' && ch <= '~') {
+      (*input)[i] = Rune(0xFF01 + (ch - '!'));
+    }
+  }
 }
 
 void fullWidth(std::vector<std::vector<Rune>> *input) {
@@ -70,12 +78,69 @@ void fullWidth(std::vector<std::vector<Rune>> *input) {
   }
 }
 
-std::vector<std::vector<Rune>> applyTrailerHeader(const 
-    std::vector<std::vector<Rune>> &input) {
+void padTo(std::vector<std::vector<Rune>> *input, size_t width) {
+  bool left = false;
+  for (auto &rv: *input) {
+    while(rv.size() < width) {
+      if (left) {
+        rv.insert(rv.begin(), Rune(0x20));
+      } else {
+        rv.insert(rv.end(), Rune(0x20));
+      }
+      left = !left;
+    }
+  }
+}
 
+std::vector<std::vector<Rune>> applyTrailerHeader(const 
+    std::vector<std::vector<Rune>> &input, size_t width) {
+  static const Rune vertbar(0xFF5C);
+  static const Rune topbar(0xFFE3);
+  static const Rune botbar(0xFF3F);
+  static const std::vector<Rune> bun1 = runesFromString("(\\__/) ||");
+  static const std::vector<Rune> bun2 = runesFromString("(•ㅅ•) ||");
+  static const std::vector<Rune> bun3 = runesFromString("/ 　 づ");
+
+  std::vector<std::vector<Rune>> res;
+  std::vector<Rune> templine;
+  templine.push_back(vertbar);
+  for (size_t i = 0; i < width - 2; ++i) {
+    templine.push_back(topbar);
+  }
+  templine.push_back(vertbar);
+  res.push_back(templine);
+
+  for (const auto &line: input) {
+    templine = line;
+    templine.insert(templine.begin(), vertbar);
+    templine.insert(templine.end(), vertbar);
+    res.push_back(templine);    
+  }
+  templine.clear();
+  templine.push_back(vertbar);
+  for (size_t i = 0; i < width - 2; ++i) {
+    templine.push_back(botbar);
+  }
+  templine.push_back(vertbar);
+  res.push_back(templine);
+
+  res.push_back(bun1);
+  res.push_back(bun2);
+  res.push_back(bun3);
+
+  return res;
 }
 
 std::string bunnyify(const std::string &text) {
-  // Use 10 as width
-  return "";
+  auto rv = runesFromString(text);
+  auto lines = splitLines(rv, 8);
+  padTo(&lines, 8);
+  fullWidth(&lines);
+
+  auto bun = applyTrailerHeader(lines, 10);
+  std::string result;
+  for (auto &bunline: bun) {
+    result += to_string(bunline) + "\n";
+  }
+  return result;
 }

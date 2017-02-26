@@ -96,11 +96,39 @@ void testSplits() {
       //std::cout << to_string(line) << std::endl;
     }
   }
+
+  rv = runesFromString("abcdefghijklmnopqrstuvwxyz!~");
+  fullWidth(&rv);
+  //std::cout << to_string(rv) << std::endl;
+  assert (to_string(rv) == 
+    "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ！～");
+  rv = runesFromString("abcdef asdffghj 12 23 34");
+  auto lines = splitLines(rv, 6);
+  padTo(&lines, 8);
+//  for (auto &line: lines) {
+//    std::cout << to_string(line) << std::endl;
+//  }
+}
+
+void testBunnify() {
+  auto rv = runesFromString("We are testing the functionality of all functions");
+  auto lines = splitLines(rv, 8);
+  padTo(&lines, 8);
+  fullWidth(&lines);
+
+  auto bun = applyTrailerHeader(lines, 10);
+//  for (auto &bunline: bun) {
+//    std::cout << to_string(bunline) << std::endl;
+//  }
+
+  //std::cout << bunnyify("Testing one last time") << std::endl;
 }
 
 int main() {
+  testBunnify();
   testSplits();
   testPrints();
   testStrings();
+  std::cout << bunnyify("Looks good boss!") << std::endl;
   return 0;
 }
