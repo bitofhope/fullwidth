@@ -153,11 +153,11 @@ std::vector<std::vector<Rune>> applyTrailerHeader(const
 
 std::string bunnyify(const std::string &text) {
   auto rv = runesFromString(text);
-  auto lines = splitLines(rv, 8);
-  padTo(&lines, 8);
+  auto lines = splitLines(rv, 10);
+  padTo(&lines, 10);
   fullWidth(&lines);
 
-  auto bun = applyTrailerHeader(lines, 10);
+  auto bun = applyTrailerHeader(lines, 12);
   std::string result;
   for (auto &bunline: bun) {
     result += to_string(bunline) + "\n";
