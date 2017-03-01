@@ -99,7 +99,7 @@ void fullWidth(std::vector<std::vector<Rune>> *input) {
 }
 
 void padTo(std::vector<std::vector<Rune>> *input, size_t width) {
-  bool left = false;
+  bool left = true;
   for (auto &rv: *input) {
     while(rv.size() < width) {
       if (left) {
@@ -109,6 +109,7 @@ void padTo(std::vector<std::vector<Rune>> *input, size_t width) {
       }
       left = !left;
     }
+    left = true;
   }
 }
 
