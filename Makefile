@@ -19,7 +19,7 @@ fullwidth: $(OBJECTS_BUN)
 # Man page, requires pandoc
 
 doc/fullwidth.1 : doc/fullwidth.md
-	pandoc $@ -s -t man -o $<
+	pandoc $< -s -t man -o $@
 
 # Builds all the object files we need
 # This is an implicit rule and pattern rule, this one tells us how to make .o
