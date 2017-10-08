@@ -9,7 +9,7 @@ DEBUG = -g
 
 # The install rule below uses this variable to determine where to install
 ifndef $(prefix)
-	prefix=/usr
+	prefix=/usr/local
 endif
 
 # Main target, requires objects to be built
