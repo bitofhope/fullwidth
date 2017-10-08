@@ -1,8 +1,10 @@
 /*
-* bunnysay
+* fullWidth
 *
-*  Created on: 2015-11-30
-*      Author: brad
+*  Created on: 2017-10-09
+*      Original Program: bunnysay
+*      Original Author: brad
+*      Modified by bitofhope <bitofhope@kapsi.fi>
 *
 *   This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by

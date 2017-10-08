@@ -1,8 +1,10 @@
 /*
-* bunnysay
+* fullWidth
 *
-*  Created on: 2015-11-30
-*      Author: brad
+*  Created on: 2017-10-09
+*      Original Program: bunnysay
+*      Original Author: brad
+*      Modified by bitofhope <bitofhope@kapsi.fi>
 *
 *   This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by
@@ -18,6 +20,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
+
 #pragma once
 #include <vector>
 #include "rune.h"
@@ -30,22 +33,13 @@ std::vector<std::vector<Rune>> splitLines(const std::vector<Rune> &input,
     size_t cols);
 
 // helper function that runes fullWidth over multiple lines
-void fullWidth(std::vector<std::vector<Rune>> *input);
+void runeToFW(std::vector<std::vector<Rune>> *input);
 
 // fullWidth converts input to unicode characters in the Fullwidth
 // section 0xFF01+
-void fullWidth(std::vector<Rune> *input);
+void runeToFW(std::vector<Rune> *input);
 
-// padTo pads the text fairly on both sides until it reaches width
-// it does so by padding with 0x20 (' ')
-void padTo(std::vector<std::vector<Rune>> *input, size_t width);
+// fullWidth takes in a UTF-8 string and returns a UTF-8 encoded string of
+// the input string with alphabet replace by the Fullwidth equivalents
+std::string fullWidth(const std::string &text);
 
-// applyTrailerHeader takes in Runes in lines and adds the sides, top and
-// bottom of the bunny sign. It assumes fullWidth has been applied already
-// and will create the top and bottom based on the size given by width
-std::vector<std::vector<Rune>> applyTrailerHeader(const 
-    std::vector<std::vector<Rune>> &input, size_t width);
-
-// bunnyify takes in a UTF-8 string and returns a UTF-8 encoded string of
-// the input string with the bunny adornments as seen on @bunnysay_ebooks
-std::string bunnyify(const std::string &text);

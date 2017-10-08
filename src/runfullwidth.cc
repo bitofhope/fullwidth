@@ -1,8 +1,10 @@
 /*
-* bunnysay
+* fullWidth
 *
-*  Created on: 2015-11-30
-*      Author: brad
+*  Created on: 2017-10-09
+*      Original Program: bunnysay
+*      Original Author: brad
+*      Modified by bitofhope <bitofhope@kapsi.fi>
 *
 *   This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by
@@ -18,7 +20,8 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
-#include "bunnysay.h"
+
+#include "fullwidth.h"
 #include <iostream>
 #include <string>
 
@@ -47,5 +50,5 @@ int main(int argc, char **argv) {
     usage(*argv);
     return 0;
   }
-  std::cout << bunnyify(buff);
+  std::cout << fullWidth(buff) << std::endl;
 }
