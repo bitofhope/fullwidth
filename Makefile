@@ -16,6 +16,11 @@ endif
 fullwidth: $(OBJECTS_BUN)
 	$(CXX) -O2 $(CXXFLAGS) -o fullwidth $(OBJECTS_BUN)
 
+# Man page, requires pandoc
+
+doc/fullwidth.1 : doc/fullwidth.md
+	pandoc $@ -s -t man -o $<
+
 # Builds all the object files we need
 # This is an implicit rule and pattern rule, this one tells us how to make .o
 # file from src/%.cc files. Thereby, when the fullwidth target needs the
@@ -26,10 +31,12 @@ fullwidth: $(OBJECTS_BUN)
 %.o : src/%.cc
 	$(CXX) -O2 $(CXXFLAGS) -c -o $@ $<
 
+
 # Phony prevents make from thinking "install" is a file
 .PHONY: install
 install : fullwidth
 	install -m 0755 fullwidth $(prefix)/bin
+	install -m 0644 doc/fullwidth.1 $(prefix)/man/man1
 
 .PHONY: clean
 clean : 
