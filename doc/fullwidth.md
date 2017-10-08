@@ -9,11 +9,11 @@ fullwidth --- convert text to CJK fullwidth characters
 # SYNOPSIS
 
 **fullwidth** TEXT  
-**fullwidth** --
+**fullwidth** -
 
 # DESCRIPTION
 
-**fullwidth** reads text from command line or standard input (with **--**) and
+**fullwidth** reads text from command line or standard input (with **-**) and
 outputs the changed text on standard output. Qualifying characters from the text
 will be changed to CJK fullwidth forms.
 
