@@ -6,7 +6,7 @@ Turn ASCII alphabetical characters into CJK ｆｕｌｌｗｉｄｔｈ Unicode 
 
 Takes input from standard input or cmdline args, you can use
 
-`echo '<string>' | fullwidth --`
+`echo '<string>' | fullwidth - 
 
 or
 
